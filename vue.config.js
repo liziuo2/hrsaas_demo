@@ -36,8 +36,21 @@ module.exports = {
     overlay: {
       warnings: false,
       errors: true
-    }
+    },
     // before: require('./mock/mock-server.js')
+
+    // 设置代理解决跨域问题
+    proxy: {
+      // 要代理的地址
+      '/dev-api': {
+        // 真实地址
+        target: 'http://localhost:3000',
+        // 地址拼接时做的处理
+        pathRewrite: {
+          '^/dev-api': ''
+        }
+      }
+    }
   },
   configureWebpack: {
     // provide the app's title in webpack's name field, so that
