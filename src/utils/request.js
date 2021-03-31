@@ -1,5 +1,5 @@
 import axios from 'axios'
-
+import { Message } from 'element-ui'
 const $axios = axios.create({
   baseURL: process.env.VUE_APP_BASE_API
 })
@@ -17,12 +17,32 @@ $axios.interceptors.request.use(
 // 设置响应拦截器
 $axios.interceptors.response.use(
   function (res) {
-    return res
+    if (res.data.success) {
+      return res.data.data
+    } else {
+      Message.error(res.data.message)
+      return Promise.reject(new Error(res.data.message))
+    }
   },
   function (err) {
     return Promise.reject(err)
   }
 )
 
+// 让响应拦截器统一拦截.catch,不在控制台出现红色错误信息,argument是发送请求传过来的参数
+function _ajax (argument) {
+  return new Promise((resolve, reject) => {
+    $axios(argument)
+      .then(res => {
+        resolve(res)
+      })
+      .catch(err => {
+        if (argument.hasCatch) {
+          reject(err)
+        }
+      })
+  })
+}
+
 // 暴露出去
-export default $axios
+export default _ajax

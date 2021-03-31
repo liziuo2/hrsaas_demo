@@ -42,12 +42,12 @@ module.exports = {
     // 设置代理解决跨域问题
     proxy: {
       // 要代理的地址
-      '/dev-api': {
-        // 真实地址
-        target: 'http://localhost:3000',
+      '/api': {
+        // 真实地址/
+        target: 'http://localhost:3000/api',
         // 地址拼接时做的处理
         pathRewrite: {
-          '^/dev-api': ''
+          '^/api': ''
         }
       }
     }
