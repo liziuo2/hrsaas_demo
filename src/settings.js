@@ -1,5 +1,4 @@
 module.exports = {
-
   title: 'Vue Admin Template',
 
   /**
@@ -12,5 +11,7 @@ module.exports = {
    * @type {boolean} true | false
    * @description Whether show the logo in sidebar
    */
-  sidebarLogo: false
+  // 是否显示logo,改为true
+  // sidebarLogo: false
+  sidebarLogo: true
 }

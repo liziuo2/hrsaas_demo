@@ -32,7 +32,7 @@ export default {
   data () {
     return {
       form: {
-        mobile: '13600000002',
+        mobile: '13800000002',
         password: '123456'
       },
       rules: {

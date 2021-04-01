@@ -8,7 +8,7 @@ import 'nprogress/nprogress.css'
 // 网页白名单
 const whitePage = ['/login', '/404']
 // 前置守卫
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   NProgress.start()
   const token = store.getters.token
   // 判断是否有token
@@ -28,8 +28,14 @@ router.beforeEach((to, from, next) => {
       // 在登录页则跳转到首页
       next('/')
     } else {
-      // 不在登录页则正常跳转到对应页面
-      next()
+      // 不在登录页则正常跳转到对应页面,判断是否已登录(判断是否有用户信息)
+      if (store.getters.isLogin) {
+        next()
+      } else {
+        // 发送请求获取用户信息
+        await store.dispatch('user/getUserInfo')
+        next()
+      }
     }
   }
   // 这里结束进入条是为了防止在A页面跳转A页面造成进度条卡顿问题

@@ -1,31 +1,43 @@
-import { sysLogin } from '@/api/user.js'
+import { sysLogin, sysProfile, sysUserById } from '@/api/user.js'
 import { Message } from 'element-ui'
 import { setToken, getToken, removeToken } from '@/utils/auth.js'
 
 const state = {
-  token: getToken()
+  token: getToken(),
+  // 用户信息
+  userInfo: ''
 }
 const mutations = {
   // 设置token
   setToken (state, value) {
     state.token = value
-    // 存储到cookie中
     setToken(value)
   },
   // 删除token
   removeToken (state) {
     state.token = null
-    // 移出本地token
     removeToken()
+  },
+  // 更改用户信息
+  setUserInfo (state, value) {
+    state.userInfo = value
   }
 }
 const actions = {
-  // 发送请求获取token
+  // 获取token
   async getUserToken ({ commit }, form) {
     const res = await sysLogin(form)
     // 设置token
     Message.success('登录成功')
     commit('setToken', res)
+  },
+  // 获取用户信息
+  async getUserInfo (store) {
+    const res = await sysProfile()
+    // 获取用户其他信息
+    const res1 = await sysUserById(res.userId)
+    // 保存到userInfo中
+    store.commit('setUserInfo', { ...res, ...res1 })
   }
 }
 

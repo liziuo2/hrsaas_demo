@@ -1,13 +1,20 @@
 <template>
-  <div class="sidebar-logo-container" :class="{'collapse':collapse}">
+  <div class="sidebar-logo-container" :class="{ collapse: collapse }">
     <transition name="sidebarLogoFade">
-      <router-link v-if="collapse" key="collapse" class="sidebar-logo-link" to="/">
-        <img v-if="logo" :src="logo" class="sidebar-logo">
-        <h1 v-else class="sidebar-title">{{ title }} </h1>
+      <!-- 收起 -->
+      <router-link
+        v-if="collapse"
+        key="collapse"
+        class="sidebar-logo-link"
+        to="/"
+      >
+        <img v-if="logo" :src="logo" class="sidebar-logo-small" />
+        <h1 v-else class="sidebar-title">{{ title }}</h1>
       </router-link>
+      <!-- 展开 -->
       <router-link v-else key="expand" class="sidebar-logo-link" to="/">
-        <img v-if="logo" :src="logo" class="sidebar-logo">
-        <h1 class="sidebar-title">{{ title }} </h1>
+        <img v-if="logo" :src="logo" class="sidebar-logo-big" />
+        <!-- <h1 class="sidebar-title">{{ title }}</h1> -->
       </router-link>
     </transition>
   </div>
@@ -22,10 +29,10 @@ export default {
       required: true
     }
   },
-  data() {
+  data () {
     return {
       title: 'Vue Admin Template',
-      logo: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png'
+      logo: require('@/assets/common/logo.png')
     }
   }
 }
@@ -46,7 +53,8 @@ export default {
   width: 100%;
   height: 50px;
   line-height: 50px;
-  background: #2b2f3a;
+  // 去掉背景色
+  // background: #2b2f3a;
   text-align: center;
   overflow: hidden;
 
@@ -59,6 +67,21 @@ export default {
       height: 32px;
       vertical-align: middle;
       margin-right: 12px;
+    }
+    // 收起样式
+    & .sidebar-logo-small {
+      width: 32px;
+      height: 32px;
+      vertical-align: middle;
+      margin-right: 12px;
+    }
+    // 展开样式
+    & .sidebar-logo-big {
+      width: 100%;
+      height: 32px;
+      vertical-align: middle;
+      margin-right: 12px;
+      object-fit: contain;
     }
 
     & .sidebar-title {

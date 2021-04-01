@@ -10,3 +10,18 @@ export function sysLogin (data) {
     data
   })
 }
+
+// 获取用户信息接口
+export function sysProfile () {
+  return $axios({
+    url: '/sys/profile',
+    method: 'POST'
+  })
+}
+
+// 获取员工基本信息接口
+export function sysUserById (id) {
+  return $axios({
+    url: `/sys/user/${id}`
+  })
+}
