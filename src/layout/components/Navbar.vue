@@ -1,11 +1,10 @@
 <template>
   <div class="navbar">
-    <div>
-      <hamburger
-        :is-active="sidebar.opened"
-        class="hamburger-container"
-        @toggleClick="toggleSideBar"
-      />
+    <div class="icon">
+      <i
+        :class="sidebar.opened ? 'el-icon-s-fold' : 'el-icon-s-unfold'"
+        @click="toggleSideBar"
+      ></i>
       <div class="app-breadcrumb">
         江苏传智播客教育科技股份有限公司
         <span class="breadBtn">体验版</span>
@@ -52,12 +51,8 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import Hamburger from '@/components/Hamburger'
 
 export default {
-  components: {
-    Hamburger
-  },
   computed: {
     ...mapGetters(['sidebar', 'avatar', 'userInfo'])
   },
@@ -90,7 +85,15 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-
+  padding: 0 5px;
+  .icon {
+    display: flex;
+    i {
+      font-size: 24px;
+      margin-right: 10px;
+      vertical-align: top;
+    }
+  }
   .hamburger-container {
     line-height: 46px;
     height: 100%;
@@ -106,7 +109,6 @@ export default {
   .app-breadcrumb {
     display: flex;
     align-items: center;
-    margin-top: 15px;
     .breadBtn {
       margin-left: 15px;
     }
