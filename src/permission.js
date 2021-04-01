@@ -20,7 +20,7 @@ router.beforeEach((to, from, next) => {
     } else {
       // 不在白名单内,跳转到登陆页面
       Message.info('还未登录账号,即将跳转到登录页')
-      next('/login')
+      next('/login?redirect=' + to.fullPath)
     }
   } else {
     // 有token,判断是否在登录页

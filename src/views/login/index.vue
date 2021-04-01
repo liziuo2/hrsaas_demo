@@ -61,8 +61,15 @@ export default {
         if (valid) {
           // 发送请求登录账号
           await this.getUserToken(this.form)
-          //  跳转到首页
-          this.$router.push('/')
+          const _redirect = this.$route.query.redirect
+          // 判断是去到登录页还是其他页面
+          if (_redirect) {
+            //  跳转到对应页面
+            this.$router.push(_redirect)
+          } else {
+            //  跳转到首页
+            this.$router.push('/')
+          }
         } else {
           this.$message.error('验证失败')
         }
