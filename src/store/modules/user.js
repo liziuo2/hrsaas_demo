@@ -21,6 +21,15 @@ const mutations = {
   // 更改用户信息
   setUserInfo (state, value) {
     state.userInfo = value
+  },
+  // 删除用户信息
+  removeUserInfo (state) {
+    state.userInfo = ''
+  },
+  // 退出登录处理
+  logout () {
+    this.commit('user/removeToken')
+    this.commit('user/removeUserInfo')
   }
 }
 const actions = {
