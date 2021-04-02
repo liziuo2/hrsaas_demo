@@ -1,6 +1,8 @@
 import axios from 'axios'
 import { Message } from 'element-ui'
 import { getToken } from '@/utils/auth.js'
+import store from '@/store'
+import router from '@/router'
 const $axios = axios.create({
   baseURL: process.env.VUE_APP_BASE_API
 })
@@ -30,6 +32,12 @@ $axios.interceptors.response.use(
     }
   },
   function (err) {
+    // token过期处理
+    if (err.response && err.response.data && err.response.data.code === 10002) {
+      store.commit('user/logout')
+      Message.error(err.response.data.message)
+      router.push('/login?redirect=' + window.location.href.split('#')[1])
+    }
     return Promise.reject(err)
   }
 )
