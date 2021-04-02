@@ -7,8 +7,12 @@ import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 // 网页白名单
 const whitePage = ['/login', '/404']
+
 // 前置守卫
 router.beforeEach(async (to, from, next) => {
+  // 调用取消所有请求的方法
+  window.cancelEventAll()
+  // 开启进度条
   NProgress.start()
   const token = store.getters.token
   // 判断是否有token

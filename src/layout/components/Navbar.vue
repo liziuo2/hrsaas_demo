@@ -62,7 +62,7 @@ export default {
           this.$confirm('确定要退出登录吗？')
             .then(_ => {
               this.$store.commit('user/logout')
-              this.$router.push('/login')
+              this.$router.push('/login?redirect=' + this.$route.fullPath)
             })
             .catch(_ => {})
 
