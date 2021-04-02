@@ -30,42 +30,50 @@ import Layout from '@/layout'
  * a base page that does not have permission requirements
  * all roles can be accessed
  */
+// 不需要权限的路由
 export const constantRoutes = [
   {
     path: '/login',
     component: () => import('@/views/login/index'),
+    // 不在菜单显示
     hidden: true
   },
-
   {
     path: '/404',
     component: () => import('@/views/404'),
     hidden: true
   },
-
-  {
-    path: '/',
-    component: Layout,
-    redirect: '/dashboard',
-    children: [
-      {
-        path: '/dashboard',
-        name: 'Dashboard',
-        component: () => import('@/views/dashboard/index'),
-        meta: { title: 'Dashboard', icon: 'dashboard' }
-      }
-    ]
-  },
-
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
+]
+
+// 需要权限的路由
+import dashboard from './modules/dashboard'
+import departments from './modules/departments'
+import approvals from './modules/approvals'
+import attendance from './modules/attendance'
+import employees from './modules/employees'
+import permission from './modules/permission'
+import salarys from './modules/salarys'
+import setting from './modules/setting'
+import social from './modules/social'
+const needControlRoutes = [
+  dashboard,
+  departments,
+  employees,
+  setting,
+  salarys,
+  social,
+  attendance,
+  approvals,
+  permission
 ]
 
 const createRouter = () =>
   new Router({
     // mode: 'history', // require service support
     scrollBehavior: () => ({ y: 0 }),
-    routes: constantRoutes
+    routes: [...needControlRoutes, ...constantRoutes]
   })
 
 const router = createRouter()

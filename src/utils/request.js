@@ -23,7 +23,7 @@ $axios.interceptors.request.use(
     if (getToken()) {
       config.headers.Authorization = `Bearer ${getToken()}`
     }
-    // 接口请求的取消处理
+    // 同一接口请求的取消处理
     cancelArr = cancelArr.filter(item => {
       if (item.url === config.url && item.method === config.method) {
         item.fn()

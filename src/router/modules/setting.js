@@ -1,0 +1,17 @@
+import Layout from '@/layout'
+
+export default {
+  path: '/setting',
+  component: Layout,
+  children: [
+    {
+      path: '',
+      name: 'setting',
+      meta: {
+        title: '公司设置',
+        icon: 'setting'
+      },
+      component: () => import('@/views/setting/index.vue')
+    }
+  ]
+}
