@@ -20,6 +20,10 @@
         <el-input v-model="form.introduce" class="ipt"></el-input>
       </el-form-item>
     </el-form>
+    <template #footer>
+      <el-button @click="showDialog = false">取消</el-button>
+      <el-button type="primary">确定</el-button>
+    </template>
   </el-dialog>
 </template>
 
@@ -28,7 +32,7 @@ export default {
   data () {
     return {
       // 控制对话框是否显示
-      showDialog: true,
+      showDialog: false,
       //   表单数据
       form: {
         name: '',
@@ -39,6 +43,11 @@ export default {
       //   校验规则
       rules: {}
     }
+  },
+  created () {
+    this.$bus.$on('showDialog', () => {
+      this.showDialog = true
+    })
   }
 }
 </script>

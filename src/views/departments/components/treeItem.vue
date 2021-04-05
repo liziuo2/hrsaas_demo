@@ -44,6 +44,7 @@ export default {
         case 'add':
           console.log('add')
           // 弹出对话框
+          this.$bus.$emit('showDialog')
           break
         case 'edit':
           console.log('edit')

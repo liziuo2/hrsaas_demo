@@ -44,6 +44,8 @@ Object.keys(directivesObj).forEach(item => {
   Vue.directive(item, directivesObj[item])
 })
 
+Vue.prototype.$bus = new Vue()
+
 new Vue({
   el: '#app',
   router,
