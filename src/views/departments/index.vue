@@ -5,7 +5,7 @@
     <!-- 树形结构 -->
     <el-tree :data="treeData">
       <template v-slot="scope">
-        <treeItem :nodeData="scope.data"></treeItem>
+        <treeItem :nodeData="scope.data" :isShow="true"></treeItem>
       </template>
     </el-tree>
   </div>
