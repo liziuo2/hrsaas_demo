@@ -42,9 +42,8 @@ export default {
     commandEvent (command) {
       switch (command) {
         case 'add':
-          console.log('add')
           // 弹出对话框
-          this.$bus.$emit('showDialog')
+          this.$bus.$emit('showDialog', this.nodeData)
           break
         case 'edit':
           console.log('edit')

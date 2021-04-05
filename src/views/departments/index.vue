@@ -9,7 +9,7 @@
       </template>
     </el-tree>
     <!-- 对话框 -->
-    <dialogItem></dialogItem>
+    <dialogItem :dialogData="dialogData" @getData="getData"></dialogItem>
   </div>
 </template>
 
@@ -25,11 +25,15 @@ export default {
   },
   data () {
     return {
+      // 标题数据
       titleData: {
+        // 添加id属性
+        id: '',
         name: '江苏传智',
         children: [],
         manager: '负责人'
       },
+      // 树形数据
       treeData: [
         {
           name: '财务部',
@@ -40,17 +44,24 @@ export default {
             }
           ]
         }
-      ]
+      ],
+      // 传入dialog的原始树形数据
+      dialogData: []
     }
   },
-  async created () {
-    const res = await companyDepartment()
-    this.titleData.name = res.companyName
-    // console.log(res)
-    // 返回数据的当前数据的id是与自己子集的pid是相等的
-    this.treeData = getTree(res.depts, '')
+  created () {
+    this.getData()
   },
-  methods: {}
+  methods: {
+    async getData () {
+      const res = await companyDepartment()
+      this.titleData.name = res.companyName
+      // console.log(res)
+      // 返回数据的当前数据的id是与自己子级的pid是相等的
+      this.treeData = getTree(res.depts, '')
+      this.dialogData = res.depts
+    }
+  }
 }
 </script>
 
