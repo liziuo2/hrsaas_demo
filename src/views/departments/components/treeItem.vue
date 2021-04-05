@@ -1,7 +1,7 @@
 <template>
   <div class="treeItem">
-    <div class="name">{{ nodeData.label }}</div>
-    <div class="manager">负责人</div>
+    <div class="name">{{ nodeData.name }}</div>
+    <div class="manager">{{ nodeData.manager }}</div>
     <div class="option">操作</div>
   </div>
 </template>
