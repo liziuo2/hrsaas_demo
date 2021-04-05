@@ -8,16 +8,20 @@
         <treeItem :nodeData="scope.data" :isShow="true"></treeItem>
       </template>
     </el-tree>
+    <!-- 对话框 -->
+    <dialogItem></dialogItem>
   </div>
 </template>
 
 <script>
 import treeItem from './components/treeItem'
+import dialogItem from './components/dialog'
 import { companyDepartment } from '@/api/departments.js'
 import { getTree } from '@/utils'
 export default {
   components: {
-    treeItem
+    treeItem,
+    dialogItem
   },
   data () {
     return {
