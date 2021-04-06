@@ -4,6 +4,7 @@
     :visible.sync="showDialog"
     :close-on-click-modal="false"
     @close="close"
+    width="750px"
   >
     <el-form ref="form" :model="form" label-width="100px" :rules="rules">
       <el-form-item label="部门名称" prop="name">
