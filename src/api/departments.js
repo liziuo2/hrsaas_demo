@@ -14,11 +14,19 @@ export function sysUserSimple () {
   })
 }
 
-// 新增部门
+// 新增部门信息
 export function companyDepartmentAdd (data) {
   return $axios({
     url: '/company/department',
     method: 'POST',
     data
+  })
+}
+
+// 删除部门信息
+export function companyDepartmentDel (id) {
+  return $axios({
+    url: `/company/department/${id}`,
+    method: 'DELETE'
   })
 }

@@ -5,7 +5,11 @@
     <!-- 树形结构 -->
     <el-tree :data="treeData">
       <template v-slot="scope">
-        <treeItem :nodeData="scope.data" :isShow="true"></treeItem>
+        <treeItem
+          :nodeData="scope.data"
+          :isShow="true"
+          @getData="getData"
+        ></treeItem>
       </template>
     </el-tree>
     <!-- 对话框 -->

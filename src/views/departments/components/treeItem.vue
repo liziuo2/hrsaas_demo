@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import { companyDepartmentDel } from '@/api/departments'
 export default {
   props: {
     nodeData: {
@@ -49,7 +50,15 @@ export default {
           console.log('edit')
           break
         case 'del':
-          console.log('del')
+          this.$confirm('您确定要删除该部门吗？', '温馨提示')
+            .then(async () => {
+              await companyDepartmentDel(this.nodeData.id)
+              this.$message.success('删除成功')
+              this.$emit('getData')
+            })
+            .catch(() => {
+              this.$message.info('取消删除成功')
+            })
           break
       }
     }
