@@ -3,7 +3,7 @@
     <treeItem class="title" :nodeData="titleData"></treeItem>
     <hr />
     <!-- 树形结构 -->
-    <el-tree :data="treeData">
+    <el-tree :data="treeData" v-loading="loading">
       <template v-slot="scope">
         <treeItem
           :nodeData="scope.data"
@@ -50,7 +50,9 @@ export default {
         }
       ],
       // 传入dialog的原始树形数据
-      dialogData: []
+      dialogData: [],
+      // 加载效果
+      loading: false
     }
   },
   created () {
@@ -58,7 +60,9 @@ export default {
   },
   methods: {
     async getData () {
+      this.loading = true
       const res = await companyDepartment()
+      this.loading = false
       this.titleData.name = res.companyName
       // console.log(res)
       // 返回数据的当前数据的id是与自己子级的pid是相等的

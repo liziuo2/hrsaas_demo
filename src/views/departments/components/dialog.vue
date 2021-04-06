@@ -85,7 +85,7 @@ export default {
                     return item.pid === this.nodeData.pid
                   })
                   .some(item => {
-                    // 名称不能和同级部门相同且,不能是它自己(修改时名称是等于当前项的名称的)
+                    // 名称不能和同级部门相同,且不能是它自己(排除自身的名称)
                     return item.name === value && item.id !== this.nodeData.id
                   })
                   ? callback(new Error('该部门已存在'))
