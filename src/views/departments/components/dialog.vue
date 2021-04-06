@@ -59,7 +59,7 @@ export default {
           { required: true, message: '请输入部门名称', trigger: 'blur' },
           {
             validator: (rule, value, callback) => {
-              // 找到同级的部门
+              // 找到同级的部门(当前点击项的子级部门)
               let _tempArr = this.dialogData.filter(item => {
                 return item.pid === this.nodeData.id
               })

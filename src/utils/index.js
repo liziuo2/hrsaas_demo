@@ -122,7 +122,7 @@ export function param2Obj (url) {
 export function getTree (arr, str) {
   return arr.filter(item => {
     if (item.pid === str) {
-      // 直到item.children为undefined时跳出循环
+      // 直到找不到返回一个空数组时跳出循环
       item.children = getTree(arr, item.id)
       return true
     }
