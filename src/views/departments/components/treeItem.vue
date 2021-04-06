@@ -55,7 +55,7 @@ export default {
             .then(async () => {
               await companyDepartmentDel(this.nodeData.id)
               this.$message.success('删除成功')
-              this.$emit('getData')
+              this.$store.dispatch('departments/getTreeData')
             })
             .catch(() => {
               this.$message.info('取消删除成功')

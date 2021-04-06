@@ -140,7 +140,7 @@ export default {
           }
           this.$message.success(this.model === 'add' ? '新增成功' : '编辑成功')
           this.showDialog = false
-          this.$emit('getData')
+          this.$store.dispatch('departments/getTreeData')
         }
       })
     },
