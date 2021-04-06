@@ -30,3 +30,12 @@ export function companyDepartmentDel (id) {
     method: 'DELETE'
   })
 }
+
+// 编辑部门信息
+export function companyDepartmentEdit (data) {
+  return $axios({
+    url: `/company/department/${data.id}`,
+    method: 'PUT',
+    data
+  })
+}

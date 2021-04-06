@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    title="新增部门"
+    :title="model === 'add' ? '新增部门信息' : '编辑部门信息'"
     :visible.sync="showDialog"
     :close-on-click-modal="false"
     @close="close"
@@ -39,7 +39,11 @@
 </template>
 
 <script>
-import { sysUserSimple, companyDepartmentAdd } from '@/api/departments'
+import {
+  sysUserSimple,
+  companyDepartmentAdd,
+  companyDepartmentEdit
+} from '@/api/departments'
 export default {
   props: ['dialogData'],
   data () {
@@ -53,22 +57,40 @@ export default {
         manager: '',
         introduce: ''
       },
+      // 当前模式
+      model: 'add',
       // 校验规则
       rules: {
         name: [
           { required: true, message: '请输入部门名称', trigger: 'blur' },
           {
             validator: (rule, value, callback) => {
-              // 找到同级的部门(当前点击项的子级部门)
-              let _tempArr = this.dialogData.filter(item => {
-                return item.pid === this.nodeData.id
-              })
-              // 判断是否在同级部门中存在
-              _tempArr.some(item => {
-                return item.name === value
-              })
-                ? callback(new Error('该部门已存在'))
-                : callback()
+              if (this.model === 'add') {
+                // 找到当前点击项的子级同级部门
+                this.dialogData
+                  .filter(item => {
+                    return item.pid === this.nodeData.id
+                  })
+                  // 判断是否在同级部门中存在
+                  .some(item => {
+                    // 这里的value是输入框中要校验的值
+                    return item.name === value
+                  })
+                  ? callback(new Error('该部门已存在'))
+                  : callback()
+              } else {
+                // 找到当前点击项的同级部门
+                this.dialogData
+                  .filter(item => {
+                    return item.pid === this.nodeData.pid
+                  })
+                  .some(item => {
+                    // 名称不能和同级部门相同且,不能是它自己(修改时名称是等于当前项的名称的)
+                    return item.name === value && item.id !== this.nodeData.id
+                  })
+                  ? callback(new Error('该部门已存在'))
+                  : callback()
+              }
             },
             trigger: 'blur'
           }
@@ -79,7 +101,8 @@ export default {
           {
             validator: (rule, value, callback) => {
               this.dialogData.some(item => {
-                return item.code === value
+                // code不能和其他部门的code相等,且不能是它自己(修改时code是可以等于当前项的code的)
+                return item.code === value && item.id !== this.nodeData.id
               })
                 ? callback(new Error('不能有重复的code'))
                 : callback()
@@ -91,7 +114,7 @@ export default {
         ],
         introduce: [
           { required: true, message: '请输入部门简介', trigger: 'blur' },
-          { min: 5, max: 300, message: '请输入5-300个字符', trigger: 'blur' }
+          { min: 1, max: 300, message: '请输入1-300个字符', trigger: 'blur' }
         ]
       },
       // 当前节点数据
@@ -106,11 +129,16 @@ export default {
       // 全局表单验证
       this.$refs.form.validate(async valid => {
         if (valid) {
-          await companyDepartmentAdd({
-            ...this.form,
-            pid: this.nodeData.id
-          })
-          this.$message.success('新增成功')
+          // 判断是新增还是修改
+          if (this.model === 'add') {
+            await companyDepartmentAdd({
+              ...this.form,
+              pid: this.nodeData.id
+            })
+          } else {
+            await companyDepartmentEdit(this.form)
+          }
+          this.$message.success(this.model === 'add' ? '新增成功' : '编辑成功')
           this.showDialog = false
           this.$emit('getData')
         }
@@ -124,13 +152,26 @@ export default {
     },
     // 关闭对话框
     close () {
+      // 重置表单且移出表单验证(重置为el-form渲染的时候的值)
       this.$refs.form.resetFields()
+      // 手动清空form
+      this.form = {
+        name: '',
+        code: '',
+        manager: '',
+        introduce: ''
+      }
     }
   },
   created () {
-    this.$bus.$on('showDialog', data => {
+    this.$bus.$on('showDialog', (data, model) => {
       this.showDialog = true
       this.nodeData = data
+      this.model = model
+      // 如果是编辑,则将传过来的值深拷贝并赋值给form
+      if (this.model === 'edit') {
+        this.form = JSON.parse(JSON.stringify(data))
+      }
     })
   },
   beforeDestroy () {

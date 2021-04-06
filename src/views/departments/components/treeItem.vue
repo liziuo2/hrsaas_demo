@@ -44,10 +44,11 @@ export default {
       switch (command) {
         case 'add':
           // 弹出对话框
-          this.$bus.$emit('showDialog', this.nodeData)
+          this.$bus.$emit('showDialog', this.nodeData, 'add')
           break
         case 'edit':
-          console.log('edit')
+          // 弹出对话框
+          this.$bus.$emit('showDialog', this.nodeData, 'edit')
           break
         case 'del':
           this.$confirm('您确定要删除该部门吗？', '温馨提示')
