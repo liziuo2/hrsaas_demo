@@ -3,6 +3,7 @@
 import employeesData from '@/api/constant/employees'
 export default {
   hireType: function (value) {
+    // value为过滤的值
     let _index = employeesData.hireType.findIndex(item => {
       return item.id === value
     })

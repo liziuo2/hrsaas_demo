@@ -10,7 +10,13 @@
     </el-card>
     <el-card class="table">
       <el-table :data="tableData">
-        <el-table-column label="序号" type="index"></el-table-column>
+        <el-table-column label="序号">
+          <template v-slot="scope">
+            <div>
+              {{ (page.currentPage - 1) * page.pageSize + scope.$index + 1 }}
+            </div>
+          </template>
+        </el-table-column>
         <el-table-column label="姓名" prop="username"></el-table-column>
         <el-table-column label="手机号" prop="mobile"></el-table-column>
         <el-table-column label="工号" prop="workNumber"></el-table-column>
@@ -27,14 +33,14 @@
         ></el-table-column>
         <!-- <el-table-column label="状态" prop="formOfEmployment"></el-table-column> -->
         <el-table-column label="操作" width="300px">
-          <template>
+          <template v-slot="scope">
             <div>
               <el-button type="text">查看</el-button>
               <el-button type="text">转正</el-button>
               <el-button type="text">转岗</el-button>
               <el-button type="text">离职</el-button>
               <el-button type="text">角色</el-button>
-              <el-button type="text">删除</el-button>
+              <el-button type="text" @click="del(scope.row.id)">删除</el-button>
             </div>
           </template>
         </el-table-column>
@@ -54,7 +60,7 @@
 </template>
 
 <script>
-import { sysUser } from '@/api/employees'
+import { sysUser, sysUserDel } from '@/api/employees'
 export default {
   data () {
     return {
@@ -84,6 +90,19 @@ export default {
       })
       this.tableData = res.rows
       this.page.total = res.total
+    },
+    // 删除员工信息
+    del (id) {
+      this.$confirm('确定要删除该员工信息吗？', '温馨提示')
+        .then(async () => {
+          await sysUserDel(id)
+          this.$message.success('删除成功')
+          this.page.currentPage = 1
+          this.getUserList()
+        })
+        .catch(() => {
+          this.$message.info('取消删除成功')
+        })
     }
   },
   created () {

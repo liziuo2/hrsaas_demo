@@ -7,3 +7,11 @@ export function sysUser (params) {
     params
   })
 }
+
+// 删除员工信息接口
+export function sysUserDel (id) {
+  return $axios({
+    url: `/sys/user/${id}`,
+    method: 'DELETE'
+  })
+}
