@@ -4,7 +4,7 @@
       <pageTools :showLeft="false" class="top">
         <template #right>
           <el-button type="primary">导入</el-button>
-          <el-button type="primary">+ 新增员工</el-button>
+          <el-button type="primary" @click="add">+ 新增员工</el-button>
         </template>
       </pageTools>
     </el-card>
@@ -26,12 +26,16 @@
           </template>
         </el-table-column>
         <el-table-column label="部门" prop="departmentName"></el-table-column>
-        <el-table-column label="入职时间" prop="timeOfEntry"></el-table-column>
-        <el-table-column
-          label="是否在职"
-          prop="correctionTime"
-        ></el-table-column>
-        <!-- <el-table-column label="状态" prop="formOfEmployment"></el-table-column> -->
+        <el-table-column label="入职时间" prop="timeOfEntry">
+          <template v-slot="scope">
+            <div>{{ scope.row.timeOfEntry | formatTime }}</div>
+          </template>
+        </el-table-column>
+        <el-table-column label="是否在职" prop="correctionTime">
+          <template v-slot="scope">
+            <div>{{ scope.row.correctionTime | formatTime }}</div>
+          </template>
+        </el-table-column>
         <el-table-column label="操作" width="300px">
           <template v-slot="scope">
             <div>
@@ -40,7 +44,9 @@
               <el-button type="text">转岗</el-button>
               <el-button type="text">离职</el-button>
               <el-button type="text">角色</el-button>
-              <el-button type="text" @click="del(scope.row.id)">删除</el-button>
+              <el-button type="text" @click="del(scope.row.id, scope.$index)"
+                >删除</el-button
+              >
             </div>
           </template>
         </el-table-column>
@@ -56,12 +62,16 @@
       >
       </el-pagination>
     </el-card>
+    <dialogItem v-model="showDialog" @getUserList="getUserList"></dialogItem>
   </div>
 </template>
 
 <script>
 import { sysUser, sysUserDel } from '@/api/employees'
 export default {
+  components: {
+    dialogItem: () => import('./components/dialog')
+  },
   data () {
     return {
       tableData: [],
@@ -69,7 +79,8 @@ export default {
         currentPage: 1,
         pageSize: 5,
         total: 10
-      }
+      },
+      showDialog: false
     }
   },
   methods: {
@@ -92,17 +103,24 @@ export default {
       this.page.total = res.total
     },
     // 删除员工信息
-    del (id) {
+    del (id, $index) {
       this.$confirm('确定要删除该员工信息吗？', '温馨提示')
         .then(async () => {
           await sysUserDel(id)
+          // 判断删除的信息是否为最后一条信息
+          if ($index === 0) {
+            this.page.currentPage = this.page.currentPage - 1
+          }
           this.$message.success('删除成功')
-          this.page.currentPage = 1
           this.getUserList()
         })
         .catch(() => {
           this.$message.info('取消删除成功')
         })
+    },
+    // 新增员工
+    add () {
+      this.showDialog = true
     }
   },
   created () {

@@ -15,3 +15,12 @@ export function sysUserDel (id) {
     method: 'DELETE'
   })
 }
+
+// 新增员工信息接口
+export function sysUserAdd (data) {
+  return $axios({
+    url: '/sys/user',
+    method: 'POST',
+    data
+  })
+}
