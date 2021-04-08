@@ -1,7 +1,5 @@
 <template>
-  <div>
-    工资
-  </div>
+  <div class="salary"></div>
 </template>
 
 <script>

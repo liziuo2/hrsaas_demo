@@ -45,7 +45,15 @@ Object.keys(directivesObj).forEach(item => {
 })
 
 Vue.prototype.$bus = new Vue()
+// 全局注册公共组件
+import componentsJs from '@/components/index'
+Vue.use(componentsJs)
 
+// 全局注册过滤器
+import filtersObj from '@/filters'
+Object.keys(filtersObj).forEach(item => {
+  Vue.filter(item, filtersObj[item])
+})
 new Vue({
   el: '#app',
   router,

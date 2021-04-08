@@ -90,7 +90,9 @@ export default {
 .hideSidebar .fixed-header {
   width: calc(100% - 54px);
 }
-
+.main-container {
+  background-color: #f4f5f4;
+}
 .mobile .fixed-header {
   width: 100%;
 }
